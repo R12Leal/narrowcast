@@ -17,6 +17,10 @@
                   <input v-model="vuelo" type="number" class="form-control" id="vuelo" required>
                 </div>
                 <div class="col">
+                  <label for="matricula" class="form-label">Matrícula</label>
+                  <input type="text" class="form-control" id="matricula" readonly>
+                </div>
+                <div class="col">
                   <label for="fecha" class="form-label">Fecha</label>
                   <input v-model="fecha" type="date" class="form-control" id="fecha" required>
                 </div>
@@ -47,7 +51,7 @@
             <form>
               <div class="row mb-3">
                 <div class="col">
-                  <label for="vueloLlegada" class="form-label">Vuelo asociado de Llegada</label>
+                  <label for="vueloLlegada" class="form-label">Vuelo de Llegada</label>
                   <input v-model="vueloLlegada" type="number" class="form-control" id="vueloLlegada" required>
                 </div>
                 <div class="col">
@@ -58,10 +62,14 @@
                   <label for="eta" class="form-label">ETA</label>
                   <input v-model="eta" type="time" class="form-control" id="eta" required>
                 </div>
+                <div class="col">
+                  <label for="ardt" class="form-label">ARDT</label>
+                  <input v-model="eta" type="time" class="form-control" id="ardt" required>
+                </div>
               </div>
               <div class="row mb-3">
                 <div class="col">
-                  <label for="vueloSalida" class="form-label">Vuelo asociado de Salida</label>
+                  <label for="vueloSalida" class="form-label">Vuelo de Salida</label>
                   <input v-model="vueloSalida" type="number" class="form-control" id="vueloSalida" required>
                 </div>
                 <div class="col">
@@ -72,6 +80,10 @@
                   <label for="etd" class="form-label">ETD</label>
                   <input v-model="etd" type="time" class="form-control" id="etd" required>
                 </div>
+                <div class="col">
+                  <label for="aobt" class="form-label">AOBT</label>
+                  <input v-model="eta" type="time" class="form-control" id="aobt" required>
+                </div>
               </div>
             </form>
           </div>
@@ -80,24 +92,14 @@
         <div class="row justify-content-center">
         <div class="col-md-6">
         <div class="form_contenido form_LLG">
-            <div class="subform-header">
-                <h2 class="subform-title">Llegada</h2>
-            </div>
+          <div class="subform-header d-flex justify-content-between align-items-center">
+                  <h2 class="subform-title">Llegada</h2>
+                  <div class="align-self-start  mt-2">
+                    <label for="noAsistencias_llegadas" class="form-label font-weight-extra-bold text-white">¡NO HAY ASISTENCIAS!</label>&nbsp;
+                    <input v-model="noAsistenciasLlegadas" type="checkbox" class="form-check-input" id="noAsistencias_llegadas" @change="t_llegada($event.target)">
+                  </div>
+          </div>
             <form>
-              <div class="row mb-3">
-                <div class="col">
-                  <label for="noAsistencias_llegadas" class="d-flex align-items-center">¡NO HAY ASISTENCIAS!</label>
-                  <input v-model="noAsistenciasLlegadas" type="checkbox" class="custom-checkbox mr-2" id="noAsistencias_llegadas" @change="t_llegada($event.target)">
-                </div>
-                <div class="col">
-                  <label for="parking_LLG" class="form-label">Parking</label>
-                  <input v-model="parking_LLG" :disabled="checkboxMarcado" type="number" class="form-control" id="parking_LLG" required>
-                </div>
-                <div class="col">
-                  <label for="pmrs" class="form-label">PMR's</label>
-                  <input v-model="pmrs" :disabled="checkboxMarcado" type="text" class="form-control" id="pmrs" required>
-                </div>
-              </div>
               <div class="row mb-3">
                 <div class="col">
                   <label for="medios" class="form-label">Medios</label>
@@ -107,6 +109,16 @@
                     <option value="AMBULIFT - 2 OPERARIOS">AMBULIFT - 2 OPERARIOS</option>
                   </select>
                 </div>
+                <div class="col">
+                  <label for="pmrs" class="form-label">PMR's</label>
+                  <input v-model="pmrs" :disabled="checkboxMarcado" type="text" class="form-control" id="pmrs" required>
+                </div>
+                <div class="col">
+                  <label for="parking_LLG" class="form-label">Parking</label>
+                  <input v-model="parking_LLG" :disabled="checkboxMarcado" type="number" class="form-control" id="parking_LLG" required>
+                </div>
+              </div>
+              <div class="row mb-3">
                 <div class="col">
                   <label for="hpk" class="form-label">HPK</label>
                   <input v-model="hpk" :disabled="checkboxMarcado" type="time" class="form-control" id="hpk" required>
@@ -181,8 +193,8 @@ export default {
         };
         // Contenido de la tabla
         const tablaNarrowcast = [
-            ["Compañía", "Vuelo", "Fecha", "Hora estimada", "Código", "DLY"],
-            [this.compania, this.vuelo, this.fecha, this.hora, this.codigo, this.dly],
+            ["Compañía", "Vuelo", "Matrícula", "Fecha", "Hora estimada", "Código", "DLY"],
+            [this.compania, this.vuelo, this.matricula, this.fecha, this.hora, this.codigo, this.dly],
             // ... más filas ...
         ];
         // Tabla Narrowcast
@@ -268,6 +280,7 @@ export default {
       fecha: "",
       hora: "",
       codigo: "19",
+      matricula: "",
       dly: "",
       sta: "", // Inicializa con el valor adecuado
       std: "", // Inicializa con el valor adecuado
@@ -340,9 +353,12 @@ export default {
   display: block;
   font-weight: bold;
 }
-.form-control[disabled] {
+.form-control[disabled], select[disabled] {
   background-color: #fa768c;
   cursor: not-allowed;
+}
+.form-label{
+  font-weight: bold;
 }
 /* Estilos para el checkbox */
 .custom-checkbox {
