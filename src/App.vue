@@ -134,14 +134,19 @@
                 <input v-model="hda" :disabled="checkboxMarcado || medios === 'FURGONETA - 1 OPERARIO'" type="time" class="form-control" id="hda" required>
               </div>
             </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div class="position-fixed bottom-0 end-0 p-3">
+                  <button @click="generarPDF" class="btn btn-primary mb-3">Generar PDF</button>
+                </div>
+                <div class="position-fixed bottom-0 end-0 p-3" style="margin-bottom: 3.5rem;">
+                  <button @click="limpiarCampos" class="btn btn-secondary">Limpiar Campos</button>
+                </div>
+              </div>
+          </div>
           </form>
         </div>
         </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col">
-        <button @click="generarPDF" class="btn btn-primary position-fixed bottom-0 end-0 m-3">Generar PDF</button>
       </div>
     </div>
   </div>
@@ -336,7 +341,7 @@ export default {
   font-weight: bold;
 }
 .form-control[disabled] {
-  background-color: #b43348;
+  background-color: #fa768c;
   cursor: not-allowed;
 }
 /* Estilos para el checkbox */
