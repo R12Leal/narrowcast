@@ -18,7 +18,7 @@
                 </div>
                 <div class="col">
                   <label for="matricula" class="form-label">Matrícula</label>
-                  <input type="text" class="form-control" id="matricula" readonly>
+                  <input v-model="matricula" type="text" class="form-control" id="matricula">
                 </div>
                 <div class="col">
                   <label for="fecha" class="form-label">Fecha</label>
@@ -187,22 +187,25 @@ export default {
     },
     generarPDF() {
       const pdf = new jsPDF({ orientation: "landscape" });
-      const estilos = {
-        tableLineColor: [0, 0, 0], // Color de los bordes de la tabla (negro en este caso)
-        alternateRowStyles: { fillColor: [240, 240, 240] }, // Color de fila alternada (gris claro en este caso)
-        };
         // Contenido de la tabla
         const tablaNarrowcast = [
             ["Compañía", "Vuelo", "Matrícula", "Fecha", "Hora estimada", "Código", "DLY"],
             [this.compania, this.vuelo, this.matricula, this.fecha, this.hora, this.codigo, this.dly],
             // ... más filas ...
         ];
+        //
+        const estilos = {
+          tableLineColor: [255, 255, 255],
+          tableLineWidth: 0.1,
+          headStyles: { fillColor: [255, 0, 0] }, // Estilo del encabezado
+          alternateRowStyles: { fillColor: [200, 200, 200] }, // Estilo de filas alternas
+          bodyStyles: { textColor: [0, 0, 0], fontSize: 10 }, // Estilo del contenido del cuerpo    
+        };
         // Tabla Narrowcast
         pdf.autoTable({
-                headStyles: { fillColor: [111, 168, 220] },
-                body: tablaNarrowcast,
-                startY: 20,
-                styles: estilos,
+            body: tablaNarrowcast,
+            startY: 20,
+            styles: estilos,
         });
         // ESCALAS Y DLY
           pdf.setFontSize(8);
