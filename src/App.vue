@@ -1,5 +1,6 @@
 <template>
     <div id="app" class="form_contenido text-center">
+    <form>
       <div class="container mt-5">
         <h1 class="text-center">PMR INFORMES</h1><br />
         <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
@@ -21,7 +22,6 @@
                       <div class="subform-header">
                           <h2 class="subform-title">Narrowcast</h2>
                       </div>
-                      <form>
                         <div class="row mb-3">
                           <div class="col">
                             <label for="compania" class="form-label">Compañía</label>
@@ -59,13 +59,11 @@
                             </div>
                           </div>
                         </div>
-                      </form>
                   </div>
                   <div class="form_contenido data">
                       <div class="subform-header">
                           <h2 class="subform-title">Datos asociados</h2>
                       </div>
-                      <form>
                         <div class="row mb-3">
                           <div class="col">
                             <label for="vueloLlegada" class="form-label">Vuelo de Llegada</label>
@@ -102,7 +100,6 @@
                             <input v-model="aobt" type="time" class="form-control" id="aobt" required>
                           </div>
                         </div>
-                      </form>
                   </div>
             </div>
             <!-- PESTAÑA LLEGADA -->
@@ -120,7 +117,6 @@
                       <div class="container">
                           <div class="row">
                               <div class="col-md-6">
-                                  <form>
                                     <div class="mb-3">
                                           <label for="ve_llg" class="form-label">VEHÍCULO</label>
                                           <select v-model="ve_llg" :disabled="cMLLG" class="form-select" id="ve_llg" required>
@@ -159,10 +155,8 @@
                                           <label for="hda_llg" class="form-label">HDA</label>
                                           <input v-model="hda_llg" :disabled="cMLLG" type="time" class="form-control" id="hda_llg" required>
                                       </div>
-                                  </form>
                               </div>
                               <div class="col-md-6">
-                                  <form>
                                       <div class="mb-3">
                                           <label for="hpk_llg" class="form-label">HPK</label>
                                           <input v-model="hpk_llg" :disabled="cMLLG" type="time" class="form-control" id="hpk_llg" required>
@@ -179,7 +173,6 @@
                                           <label for="desembarqueAsistencias" class="form-label">DESEMBARQUE</label>
                                           <input v-model="desembarqueAsistencias" :disabled="cMLLG" type="time" class="form-control" id="desembarqueAsistencias" required>
                                       </div>
-                                  </form>
                               </div>
                           </div>
                       </div>
@@ -200,7 +193,6 @@
                     <div class="container">
                       <div class="row">
                         <div class="col-md-6">
-                            <form>
                               <div class="mb-3">
                                   <label for="acc_sal" class="form-label">ACCESO</label>
                                   <select id="acc_sal" v-model="acc_sal" :disabled="cMSAL" class="form-select">
@@ -252,10 +244,8 @@
                                 <label for="hda_sal" class="form-label">HDA</label>
                                 <input v-model="hda_sal" :disabled="cMSAL" type="time" class="form-control" id="hda_sal" required>
                               </div>
-                          </form>
                         </div>
                         <div class="col-md-6">
-                              <form>
                                 <div class="mb-3">
                                   <label for="pmrs_sal" class="form-label">PMR'S</label>
                                   <input v-model="pmrs_sal" :disabled="cMSAL" type="text" class="form-control" id="pmrs_sal" required>
@@ -288,7 +278,6 @@
                               <label for="hsb_fin_sal" class="form-label">HORA SILLA EN BODEGA</label>
                               <input v-model="hsb_fin_sal" :disabled="cMSAL" type="time" class="form-control" id="hsb_fin_sal" required>
                             </div>
-                          </form>
                     </div>
                   </div>
                 </div>    
@@ -306,6 +295,7 @@
             </div>
           </div>
         </div>
+    </form>
     </div>   
 </template>
   
@@ -314,6 +304,9 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 export default {
   methods: {
+    //
+    
+    //
     calcularEP(STA, STD) {
       const staMinutes = this.convertirHoraAMinutos(STA);
       const stdMinutes = this.convertirHoraAMinutos(STD);
@@ -331,6 +324,9 @@ export default {
       return parseInt(hours) * 60 + parseInt(minutes);
     },
     generarPDF() {
+      //
+      
+      //
       const pdf = new jsPDF({ orientation: "landscape" });
         // Contenido de la tabla
         const tablaNarrowcast = [
@@ -354,26 +350,41 @@ export default {
         });
         // ESCALAS Y DLY
           pdf.setFontSize(8);
-          pdf.text("ESCALA PROGRAMADA: " + this.calcularEP(this.sta,this.std) + " MINUTOS",15,50);
-          pdf.text("ESCALA REAL: " + this.calcularER(this.eta,this.etd) + " MINUTOS",15,55);
-          pdf.text("MINUTOS DLY: " + this.dly,15,60);
+          pdf.text("ESCALA PROGRAMADA: " + this.calcularEP(this.sta,this.std) + " MINUTOS",15,40);
+          pdf.text("ESCALA REAL: " + this.calcularER(this.eta,this.etd) + " MINUTOS",15,45);
+          pdf.text("MINUTOS DLY: " + this.dly,15,50);
           //
-          pdf.text("VUELO DE LLEGADA " + this.compania + " " + this.vueloLlegada + " " + "STA: " + this.sta + " " + "ETA: " + this.eta,15,70);
-          pdf.text("PARKING: " + this.parking_LLG,15,75);
-          if (this.cMLLG) {pdf.text("PMR'S: -",15,80);} else {pdf.text("PMR'S: " + this.pmrs_llg,15,80);}
-          if (this.cMLLG) {pdf.text("MEDIOS: -",15,85);} else {pdf.text("MEDIOS: " + this.op_vel_llg[this.ve_llg],15,85);}
+          pdf.text("VUELO DE LLEGADA " + this.compania + " " + this.vueloLlegada + " " + "STA: " + this.sta + " " + "ETA: " + this.eta,15,60);
+          pdf.text("PARKING: " + this.parking_LLG,15,65);
+          if (this.cMLLG) {pdf.text("PMR'S: -",15,70);} else {pdf.text("PMR'S: " + this.pmrs_llg,15,70);}
+          if (this.cMLLG) {pdf.text("MEDIOS: -",15,75);} else {pdf.text("MEDIOS: " + this.op_vel_llg[this.ve_llg],15,75);}
           //
-          if (this.cMLLG) {pdf.text("NO SE REALIZAN ASISTENCIAS EN ESTE VUELO",15,100);}
+          if (this.cMLLG) {pdf.text("NO SE REALIZAN ASISTENCIAS EN ESTE VUELO",15,100);} else {
+            if (this.ve_llg === "furgo_op_llg") {
+              pdf.text(this.hpk_llg + " HORA DE LLEGADA A PARKING",15,85);
+              pdf.text(this.calzosAvio + " HORA DE CALZOS DE AERONAVE",15,90);
+              pdf.text(this.aperturaAvio + " HORA DE APERTURA DE PUERTAS DE AERONAVE",15,95);
+              pdf.text(this.desembarqueAsistencias + " HORA DE DESEMBARQUE DE ASISTENCIAS",15,100);
+            }
+            else if (this.ve_llg === "ambu_op_llg") {
+              pdf.text(this.hpk_llg + " HORA DE LLEGADA A PARKING",15,85);
+              pdf.text(this.calzosAvio + " HORA DE CALZOS DE AERONAVE",15,90);
+              pdf.text(this.hca_llg + " HORA DE ACOPLE DE AMBULIFT",15,95);
+              pdf.text(this.aperturaAvio + " HORA DE APERTURA DE PUERTAS DE AERONAVE",15,100);
+              pdf.text(this.desembarqueAsistencias + " HORA DE DESEMBARQUE DE ASISTENCIAS",15,105);
+              pdf.text(this.hda_llg + " HORA DE DESACOPLE DE AMBULIFT",15,110);
+            }
+          }
           //
-          pdf.text("VUELO DE SALIDA " + this.compania + " " + this.vueloSalida + " " + "STD: " + this.std + " " + "ETD: " + this.etd,15,115);
-          pdf.text("PUERTA DE EMBARQUE: " + this.p_embarque,15,120);
-          if (this.acc_sal === "remo_sal") {pdf.text("PARKING: " + this.parking_SAL,15,125);} else {pdf.text("PARKING: -",15,125);}
-          if (this.cMSAL) {pdf.text("PMR'S: -",15,130);} else {pdf.text("PMR'S: " + this.pmrs_sal,15,130);}
-          if (this.cMSAL) {pdf.text("MEDIOS: -",15,135);} 
+          pdf.text("VUELO DE SALIDA " + this.compania + " " + this.vueloSalida + " " + "STD: " + this.std + " " + "ETD: " + this.etd,15,120);
+          pdf.text("PUERTA DE EMBARQUE: " + this.p_embarque,15,125);
+          if (this.acc_sal === "remo_sal") {pdf.text("PARKING: " + this.parking_SAL,15,130);} else {pdf.text("PARKING: -",15,130);}
+          if (this.cMSAL) {pdf.text("PMR'S: -",15,135);} else {pdf.text("PMR'S: " + this.pmrs_sal,15,135);}
+          if (this.cMSAL) {pdf.text("MEDIOS: -",15,140);} 
             else if (this.acc_sal === "remo_sal") {
-              pdf.text("MEDIOS: " + this.op_vel_sal[this.ve_sal],15,135);}
+              pdf.text("MEDIOS: " + this.op_vel_sal[this.ve_sal],15,145);}
             else if (this.acc_sal === "finger_sal") {
-              pdf.text("MEDIOS: " + this.opr_sal + " OPERARIOS",15,135);}
+              pdf.text("MEDIOS: " + this.opr_sal + " OPERARIOS",15,145);}
           
           //
           if (this.cMSAL) {pdf.text("NO SE REALIZAN ASISTENCIAS EN ESTE VUELO",15,155);}
