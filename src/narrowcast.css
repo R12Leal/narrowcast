@@ -1,0 +1,6 @@
+body {
+    background-color: #BFCCCC !important;
+  }
+.nav-link active {
+    font-weight: bold !important;
+}
